@@ -1,2 +1,12 @@
+to connect to repo
+------------------------
 git remote add pb https://github.com/paulboone/ticgit
-$ git remote -v
+
+
+git add *
+
+git commit -m 'message here'
+
+git  pull origin branch
+
+git push origin branch
