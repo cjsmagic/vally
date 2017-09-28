@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vally testing</title>
+</head>
+
+<body>
+    <center style="margin-top:25%;">
+        <form action="" class="my-form">
+            <input type="text" name="name" id="name" placeholder="first name">
+            <br>
+            <br>
+            <input type="text" name="phone" id="phone" placeholder="phone">
+            <br>
+            <br>
+            <input type="text" name="email" id="email" placeholder="email">
+            <br>
+            <br>
+            <input type="submit" id="submit">
+        </form>
+    </center>
+    <script src="jquery-1.12.4.min.js"></script>
+    <script src="vally.js"></script>
+    <script>
+    var optionObject = {
+        basicSubmit: true,
+        ajaxSubmit: false,
+        reactiveValidation: false,
+        onSubmit: function(e) {
+            console.log('called when submitted');
+        },
+        controls: [{
+            selector: '#name',
+            checkList: [{
+                name: 'required',
+                errorMessage: 'Please Enter Name'
+            }]
+        }, {
+            selector: '#phone',
+            checkList: [{
+                name: 'required',
+                errorMessage: 'Please Enter Phone'
+            }, {
+                name: 'pattern',
+                regex: /\d/,
+                errorMessage: 'Please Enter Valid phone number'
+            }]
+        }]
+    };
+
+
+    $('.my-form').vally(optionObject);
+    </script>
+</body>
+
+</html>
