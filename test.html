@@ -6,8 +6,8 @@
 </head>
 
 <body>
-    <center style="margin-top:25%;">
-        <form action="" class="my-form">
+    
+        <form action="" class="my-form" style="position: absolute;top:50%;left:50%;transform: translate(-50%, -50%);">
             <input type="text" name="name" id="name" placeholder="first name">
             <br>
             <br>
@@ -19,14 +19,16 @@
             <br>
             <input type="submit" id="submit">
         </form>
-    </center>
     <script src="jquery-1.12.4.min.js"></script>
     <script src="vally.js"></script>
     <script>
+
+
+
     var optionObject = {
         basicSubmit: true,
         ajaxSubmit: false,
-        reactiveValidation: false,
+        reactiveValidation: true,
         onSubmit: function(e) {
             console.log('called when submitted');
         },

@@ -17,20 +17,78 @@
 
 
 
+        init();
+
+
+
+        function init() {
+
+            if (settings.reactiveValidation) {
+
+                // add events for focusin, focus out, pristine checker
+
+                for (var i = 0; i < settings.controls.length; i++) {
+
+                    $(settings.controls[i].selector).focusout(function(e) {
+
+
+/*
+                        for (var j = 0; j < settings.controls[i].checkList.length; j++) {
+
+                            var checkfor = controls[i].checkList[j].name;
+                            switch (checkfor) {
+
+                                case 'required':
+                                    if (requiredChecker($(controls[i].selector))) {
+                                        formIsNotValid = true;
+                                        if (firstError) {
+                                            showErrorMessage($(controls[i].selector), controls[i].checkList[j].errorMessage, true);
+                                        }
+                                        firstError = false;
+                                    } else {
+                                        showErrorMessage($(controls[i].selector), controls[i].checkList[j].errorMessage, false);
+                                    }
+                                    break;
+
+                                case 'pattern':
+                                    if (patternChecker($(controls[i].selector), controls[i].checkList[j].regex)) {
+                                        formIsNotValid = true;
+                                        if (firstError) {
+                                            showErrorMessage($(controls[i].selector), controls[i].checkList[j].errorMessage, true);
+                                        }
+                                        firstError = false;
+                                    } else {
+                                        showErrorMessage($(controls[i].selector), controls[i].checkList[j].errorMessage, false);
+                                    }
+
+                                    break;
+
+                            }
+                        }
+
+*/
+
+
+                        console.log(e.target);
+                    });
+
+                }
+
+
+            }
+        }
+
+
+
         $(this).submit(function(e) {
-
             if (isNotValidForm()) {
-
                 return false;
             }
-
             settings.onSubmit();
             if (settings.basicSubmit == false && settings.ajaxSubmit == true) {
                 e.preventDefault();
                 return
             }
-
-
             console.log("normal submit");
         });
 
@@ -121,10 +179,7 @@
         function patternChecker(controlInstance, regexParam) {
             var value = controlInstance.val();
             var regex = new RegExp(regexParam);
-            // var flag = regex.test(value);
-            var flag = /\d/.test(value);
-
-
+            var flag = regex.test(value);
             if (!flag) {
                 return true;
             } else {
