@@ -9,12 +9,85 @@
             // These are the defaults.
             basicSubmit: true, //normal page submit
             ajaxSubmit: false,
+            reactiveValidation: false,
             controls: [],
             onSubmit: function(e) {
                 console.log("Default callback");
             }
         }, options);
 
+        
+        init();
+        
+        
+        
+        function init(){
+            var  formIsNotValid =false,firstError=true;
+            if(settings.reactiveValidation==true){
+             $.each(settings.controls, function( index, value ) {
+             
+                 
+             $(settings.controls[index].selector).focusout(function(e){
+                 $(this)[0].vallyConfig=settings.controls[index];
+                console.log(e.target,$(this)[0]) ;
+                 
+                 
+                //code to check if control is valid
+                 
+                 for(var i=0;i<$(this)[0].vallyConfig.checkList.length;i++){
+                     
+                 var checkfor = $(this)[0].vallyConfig.checkList[i].name;
+                        switch (checkfor) {
+
+                            case 'required':
+                                if (requiredChecker($($(this)[0].vallyConfig.selector))) {
+                                    formIsNotValid = true;
+                                    if (firstError) {
+                                        showErrorMessage($($(this)[0].vallyConfig.selector), $(this)[0].vallyConfig.checkList[i].errorMessage, true);
+                                    }
+                                    firstError = false;
+                                } else {
+                                    showErrorMessage($($(this)[0].vallyConfig.selector), $(this)[0].vallyConfig.checkList[i].errorMessage, false);
+                                }
+                                break;
+
+                            case 'pattern':
+                                if (patternChecker($($(this)[0].vallyConfig.selector), $(this)[0].vallyConfig.checkList[i].regex)) {
+                                    formIsNotValid = true;
+                                    if (firstError) {
+                                        showErrorMessage($($(this)[0].vallyConfig.selector), controls[i].checkList[i].errorMessage, true);
+                                    }
+                                    firstError = false;
+                                } else {
+                                    showErrorMessage($($(this)[0].vallyConfig.selector), controls[i].checkList[i].errorMessage, false);
+                                }
+
+                                break;
+
+                        }
+                 
+                 
+                 
+                 
+             }
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+             });    
+                 
+                 
+            });   
+                     
+            }
+            
+            
+        }
 
 
         $(this).submit(function(e) {
