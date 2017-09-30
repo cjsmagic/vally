@@ -4,6 +4,9 @@
 
     $.fn.vally = function(options) {
         var settings = {};
+        
+         var formIsNotValid = false;
+            var firstError = true;
         // This is the easiest way to have default options.
         settings = $.extend({
             // These are the defaults.
@@ -22,14 +25,14 @@
         
         
         function init(){
-            var  formIsNotValid =false,firstError=true;
             if(settings.reactiveValidation==true){
              $.each(settings.controls, function( index, value ) {
              
-                 
-             $(settings.controls[index].selector).focusout(function(e){
+                 //focusout keyup keypress blur change
+             $(settings.controls[index].selector).on('focusout keypress',function(e){
+                 var firstErrorLocal=true;
                  $(this)[0].vallyConfig=settings.controls[index];
-                console.log(e.target,$(this)[0]) ;
+                console.log($(this)[0]) ;
                  
                  
                 //code to check if control is valid
@@ -41,11 +44,11 @@
 
                             case 'required':
                                 if (requiredChecker($($(this)[0].vallyConfig.selector))) {
-                                    formIsNotValid = true;
-                                    if (firstError) {
+                                   ;
+                                    if (firstErrorLocal) {
                                         showErrorMessage($($(this)[0].vallyConfig.selector), $(this)[0].vallyConfig.checkList[i].errorMessage, true);
                                     }
-                                    firstError = false;
+                                    firstErrorLocal = false;
                                 } else {
                                     showErrorMessage($($(this)[0].vallyConfig.selector), $(this)[0].vallyConfig.checkList[i].errorMessage, false);
                                 }
@@ -53,13 +56,13 @@
 
                             case 'pattern':
                                 if (patternChecker($($(this)[0].vallyConfig.selector), $(this)[0].vallyConfig.checkList[i].regex)) {
-                                    formIsNotValid = true;
-                                    if (firstError) {
-                                        showErrorMessage($($(this)[0].vallyConfig.selector), controls[i].checkList[i].errorMessage, true);
+                                   
+                                    if (firstErrorLocal) {
+                                        showErrorMessage($($(this)[0].vallyConfig.selector),$(this)[0].vallyConfig.checkList[i].errorMessage, true);
                                     }
-                                    firstError = false;
+                                    firstErrorLocal = false;
                                 } else {
-                                    showErrorMessage($($(this)[0].vallyConfig.selector), controls[i].checkList[i].errorMessage, false);
+                                    showErrorMessage($($(this)[0].vallyConfig.selector),$(this)[0].vallyConfig.checkList[i].errorMessage, false);
                                 }
 
                                 break;
@@ -115,9 +118,15 @@
 
 
         function showErrorMessage(instanceParam, text, bool) {
-            if (bool) {
+            if (bool && !instanceParam.next().hasClass('vally-box')) {
                 instanceParam.after('<div class="vally-box">' + text + '</div>');
-            } else {
+            }
+            else
+            if (bool && instanceParam.next().hasClass('vally-box')) {
+                instanceParam.next().remove('.vally-box');
+                instanceParam.after('<div class="vally-box">' + text + '</div>');
+            }
+            else {
                 instanceParam.next().remove('.vally-box');
             }
         }
@@ -126,8 +135,7 @@
 
         function isNotValidForm() {
 
-            var formIsNotValid = false;
-            var firstError = true;
+           
             var controls = settings.controls;
             if (controls.length != 0) {
 
